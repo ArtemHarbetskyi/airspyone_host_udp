@@ -1,4 +1,6 @@
 /*
+ * echo "SET FREQ 144900000" | nc -u 10.5.0.4 9000
+ *
  * Copyright 2012 Jared Boone <jared@sharebrained.com>
  * Copyright 2014-2015 Benjamin Vernoux <bvernoux@airspy.com>
  *
@@ -67,10 +69,10 @@ int udp_sock;
 struct sockaddr_in udp_client;
 socklen_t client_len = sizeof(udp_client);
 
-// Переменные для IP и порта (можно менять)
+// Переменные для IP и порта
 char udp_ip[] = "10.5.0.4";  // <-- IP отримувача
-int udp_port = 1236;              // <-- Порт отримувача
-
+int udp_port = 1236;         // <-- Порт отримувача
+int udp_port_manage = 9000;         // <-- Порт отримувача
 
 
 int gettimeofday(struct timeval *tv, void* ignored)
@@ -384,7 +386,7 @@ void* udp_server(void* arg)
     socklen_t addr_len = sizeof(client_addr);
 
     server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(9000);  // Порт для команд
+    server_addr.sin_port = htons(udp_port_manage);  // Порт для команд
     server_addr.sin_addr.s_addr = INADDR_ANY;
 
     bind(server_sock, (struct sockaddr*)&server_addr, sizeof(server_addr));
@@ -1065,7 +1067,10 @@ int main(int argc, char** argv)
 		}
 	}
 
-	// udp server start
+	// udp server for sended start
+	setup_udp();
+	
+	// udp server for manage start
 	pthread_t udp_thread;
 	pthread_create(&udp_thread, NULL, udp_server, NULL);
 	pthread_detach(udp_thread);  // Автоматически завершать поток
