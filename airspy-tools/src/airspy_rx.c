@@ -70,9 +70,9 @@ struct sockaddr_in udp_client;
 socklen_t client_len = sizeof(udp_client);
 
 // Переменные для IP и порта
-char udp_ip[] = "10.5.0.4";  // <-- IP отримувача
-int udp_port = 1236;         // <-- Порт отримувача
-int udp_port_manage = 9000;         // <-- Порт отримувача
+char udp_ip[] = "10.5.0.3"; 		 // <-- IP отримувача
+int udp_port = 1236;        		 // <-- Порт отримувача
+int udp_port_manage = 9000;         	 // <-- Порт управління
 
 
 int gettimeofday(struct timeval *tv, void* ignored)
